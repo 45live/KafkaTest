@@ -1,4 +1,4 @@
-package cn.edu.ustb.kafkaModels.producer;
+package cn.edu.ustb.producer;
 
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
