@@ -16,6 +16,7 @@ import java.util.Map;
 public class KafkaConsumerTransactionISO {
     private static final Logger log = LoggerFactory.getLogger(KafkaConsumerTransactionISO.class);
 
+    @SuppressWarnings("all")
     public static void main(String[] args) {
         Map<String, Object> configMap = new HashMap<>();
         configMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "Hadoop131:9092");
@@ -34,9 +35,9 @@ public class KafkaConsumerTransactionISO {
         //      消费者从Kafka中拉取数据
         try {
             while (true) {
-                ConsumerRecords<String, String> datas = consumer.poll(Duration.ofMillis(100L));
-                for (ConsumerRecord<String, String> data : datas) {
-                    System.out.println(data);
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100L));
+                for (ConsumerRecord<String, String> record : records) {
+                    System.out.println(record);
                 }
             }
         } catch (Exception e) {
