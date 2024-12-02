@@ -4,6 +4,8 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.DeleteTopicsResult;
 import org.apache.kafka.clients.admin.ListTopicsResult;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Properties;
@@ -11,10 +13,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class KafkaTopicCleaner {
+    private static final Logger log = LoggerFactory.getLogger(cn.edu.ustb.kafkaModels.consumer.KafkaConsumerAutoOffsetTest.class);
 
     public static void main(String[] args) {
-        String bootstrapServers = "Hadoop132:9092"; // Kafka broker地址
-        String topicName = "test"; // 要清空的topic的名称
+        String bootstrapServers = "localhost:9092"; // Kafka broker地址
+        String topicName = "topic_1"; // 要清空的topic的名称
 
         Properties properties = new Properties();
         properties.put("bootstrap.servers", bootstrapServers);
@@ -28,12 +31,12 @@ public class KafkaTopicCleaner {
             waitForTopicDeletion(adminClient, topicName);
 
             // 创建新的同名topic
-            NewTopic newTopic = new NewTopic(topicName, 1, (short) 1); // 根据需要设置分区数和副本因子
+            NewTopic newTopic = new NewTopic(topicName, 1, (short) 2); // 根据需要设置分区数和副本因子
             adminClient.createTopics(Collections.singletonList(newTopic)).all().get();
 
             System.out.println("Topic " + topicName + " has been cleared and recreated.");
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            log.info("Error while creating topic {}", topicName, e);
         }
     }
 
