@@ -20,11 +20,12 @@ public class KafkaSparkStreamingTest {
     public static void main(String[] args) {
         // 初始化Spark的环境配置
         SparkConf sparkConf = new SparkConf();
-        sparkConf.setMaster("local");
+        sparkConf.setMaster("local[*]");
         sparkConf.setAppName("KafkaSparkStreamingTest");
         sparkConf.set("spark.streaming.materializer", "kafka");
 
         // 创建JavaSparkContext环境
+        // 后面的时间间隔表示，每3s就会从Kafka取一次数据
         JavaStreamingContext jsc = new JavaStreamingContext(sparkConf, new Duration(3 * 1000));
 
         // 创建Kafka的配置参数
